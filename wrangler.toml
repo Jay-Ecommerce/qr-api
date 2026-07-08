@@ -1,0 +1,15 @@
+name = "qr-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Free tier: 100,000 requests/day, no credit card required for workers.dev subdomain.
+[observability]
+enabled = true
+
+# Secrets (set via `wrangler secret put <NAME>`, never committed):
+#   RAPIDAPI_PROXY_SECRET  - value RapidAPI sends in X-RapidAPI-Proxy-Secret, verified per request
+#   ALLOW_DIRECT_ACCESS    - "true" only for local/dev testing without RapidAPI in front
+
+[env.staging]
+name = "qr-api-staging"
