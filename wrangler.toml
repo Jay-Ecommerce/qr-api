@@ -7,9 +7,14 @@ compatibility_flags = ["nodejs_compat"]
 [observability]
 enabled = true
 
+[[kv_namespaces]]
+binding = "EMAIL_SIGNUPS"
+id = "f7e507245f6648fca65646ae98a6340d"
+
 # Secrets (set via `wrangler secret put <NAME>`, never committed):
 #   RAPIDAPI_PROXY_SECRET  - value RapidAPI sends in X-RapidAPI-Proxy-Secret, verified per request
 #   ALLOW_DIRECT_ACCESS    - "true" only for local/dev testing without RapidAPI in front
+#   RESEND_API_KEY         - not yet set; run `wrangler secret put RESEND_API_KEY` to enable the landing-page welcome email
 
 [env.staging]
 name = "qr-api-staging"

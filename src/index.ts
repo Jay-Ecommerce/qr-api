@@ -5,6 +5,7 @@ import { requestLogger } from "./middleware/logger.js";
 import { localRateLimit } from "./middleware/rateLimit.js";
 import { healthRoute } from "./routes/health.js";
 import { qrRoute } from "./routes/qr.js";
+import { landingRoute } from "./routes/landing.js";
 
 const app = new Hono<AuthEnv>();
 
@@ -18,6 +19,9 @@ app.notFound((c) => c.json({ error: "not_found", message: "Unknown endpoint" }, 
 // Health check stays outside auth so uptime monitors (and RapidAPI's own health probes)
 // don't need the proxy secret.
 app.route("/", healthRoute);
+
+// Landing page + signup form are public marketing surfaces, not part of the paid API.
+app.route("/", landingRoute);
 
 app.use("/v1/*", rapidApiAuth);
 app.use("/v1/*", localRateLimit);
