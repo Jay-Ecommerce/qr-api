@@ -1,0 +1,21 @@
+name: Reddit weekly draft posts
+
+on:
+  schedule:
+    - cron: "0 10 * * 3" # Wednesday 10:00 UTC (validate-api drafts Mon, currency-api drafts Fri — staggered)
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node scripts/marketing/reddit-draft.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

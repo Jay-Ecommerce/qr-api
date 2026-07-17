@@ -1,0 +1,23 @@
+name: Dev.to weekly article
+
+on:
+  schedule:
+    - cron: "0 9 * * 4" # Thursdays 09:00 UTC (validate-api posts Tue, currency-api posts Sat — staggered so the same Dev.to account doesn't post multiple times in one day)
+  workflow_dispatch:
+    inputs:
+      article_index:
+        description: "Optional: index into DEVTO_ARTICLES to post a specific article instead of the weekly rotation pick"
+        required: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node scripts/marketing/devto-post.mjs
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          ARTICLE_INDEX: ${{ github.event.inputs.article_index }}
