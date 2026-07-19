@@ -130,6 +130,29 @@ async function generateBatch(items, concurrency = 8) {
 
 Stateless generation (no per-request server state, no database) is what makes this kind of batch job cheap to run in the first place — that's the whole design of [QR API](https://${QR_RAPIDAPI_HOST}): every call is a pure function of its query params, nothing persisted, nothing logged beyond the request path. Same account also runs [Validate](https://${VALIDATE_RAPIDAPI_HOST}) (IBAN/email/phone/etc. format checks) and [Currency API](https://${CURRENCY_RAPIDAPI_HOST}) (exchange rates) if useful for the rest of an onboarding/checkout pipeline.`,
   },
+  {
+    title: "Branded QR codes without a design tool: setting foreground/background color via query params",
+    tags: ["webdev", "api", "tutorial"],
+    body: `The default black-on-white QR code works fine functionally, but it clashes with pretty much every brand style guide the moment you drop it into a poster, product package, or app screen. Most "just generate a QR code" APIs don't expose color at all, which pushes color-matching into a separate image-editing step after the fact — recoloring an SVG's fill by hand, or worse, round-tripping through a design tool for something that should be a one-line request.
+
+[QR API](https://${QR_RAPIDAPI_HOST}) takes \`color\` (module/foreground) and \`bgColor\` (background) as plain hex query params on \`GET /v1/qr\`, no leading \`#\`:
+
+\`\`\`bash
+curl "https://qr-api.p.rapidapi.com/v1/qr?data=https://example.com&color=1a2b3c&bgColor=f4f1ea" \\
+  -H "X-RapidAPI-Key: <your-key>" \\
+  -H "X-RapidAPI-Host: qr-api.p.rapidapi.com" \\
+  --output qr.svg
+\`\`\`
+
+Both default to black-on-white (\`000000\`/\`ffffff\`) if omitted, so existing integrations don't need to change anything to keep their current output.
+
+Two things worth knowing if you're picking colors instead of just accepting the defaults:
+
+- **Contrast still has to survive a camera, not just a screen.** A QR decoder needs a clear light/dark distinction between modules and background — a pastel-on-pastel combination that looks fine in a design mockup can fail to scan reliably once printed or viewed under bad lighting. Keep real contrast between the two hex values, not just a stylistic difference.
+- **Validate hex input server-side if you ever accept it from a user.** These values get embedded directly into SVG \`fill\` attributes, so strict 3/6-digit hex validation isn't optional — it's the difference between a color param and a markup-injection vector.
+
+Same \`/v1/qr/matrix\` raw-grid endpoint is unaffected by color params since it returns boolean modules, not rendered output — colors only apply to the SVG path.`,
+  },
 ];
 
 export const REDDIT_STYLES = ["tutorial", "question", "case-study", "tip"];

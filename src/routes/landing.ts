@@ -92,6 +92,7 @@ const PAGE_HTML = `<!doctype html>
 <ul>
   <li><a href="https://validate-api.jay-trading.workers.dev/">Validate API</a> — IBAN, EU VAT, email, phone, credit card, and password validation.</li>
   <li><a href="https://currency-api.jay-trading.workers.dev/">Currency API</a> — currency conversion and exchange rates.</li>
+  <li><a href="https://crypto-toolkit.jay-trading.workers.dev/">Crypto Toolkit</a> — free crypto trading calculators &amp; guides (position sizing, DCA simulation, tax estimate).</li>
 </ul>
 
 <h2>Changelog</h2>
