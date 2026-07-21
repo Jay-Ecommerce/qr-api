@@ -52,7 +52,7 @@ curl "https://qr-api.p.rapidapi.com/v1/qr?data=https://example.com&ecc=Q" \\
   --output qr.svg
 \`\`\`
 
-[QR API](https://${QR_RAPIDAPI_HOST}) exposes \`ecc\` as a plain query param (defaults to \`M\`) so you can set it per use case instead of hardcoding one level everywhere.`,
+[QR API](https://${QR_RAPIDAPI_HOST}) exposes \`ecc\` as a plain query param (defaults to \`M\`) so you can set it per use case instead of hardcoding one level everywhere. Same account also runs [Validate](https://${VALIDATE_RAPIDAPI_HOST}) (IBAN/email/phone/etc. format checks) and [Currency API](https://${CURRENCY_RAPIDAPI_HOST}) (exchange rates).`,
   },
   {
     title: "SVG output for QR codes: why vector beats raster once anyone screenshots or resizes it",
@@ -73,7 +73,7 @@ A couple of practical notes if you're embedding these in a product:
 - **Strict hex validation on any color params matters more than it looks** — if a QR generation endpoint lets you pass custom foreground/background colors and embeds them directly into SVG attributes, that's an injection surface if the values aren't validated as actual hex colors first.
 - **Raw matrix output is still useful** — for canvas rendering, terminal output, or anything that isn't "embed an image," getting the boolean module grid directly beats parsing an SVG back into pixels.
 
-[QR API](https://${QR_RAPIDAPI_HOST}) returns \`image/svg+xml\` by default from \`GET /v1/qr\`, with a \`/v1/qr/matrix\` variant returning the raw grid for exactly that second use case.`,
+[QR API](https://${QR_RAPIDAPI_HOST}) returns \`image/svg+xml\` by default from \`GET /v1/qr\`, with a \`/v1/qr/matrix\` variant returning the raw grid for exactly that second use case. Sibling APIs on the same account: [Validate](https://${VALIDATE_RAPIDAPI_HOST}) and [Currency API](https://${CURRENCY_RAPIDAPI_HOST}).`,
   },
   {
     title: "The QR code capacity cliff: why a shortened URL scans more reliably than a long one",
@@ -95,7 +95,7 @@ curl "https://qr-api.p.rapidapi.com/v1/qr?data=https://short.link/x7f2" ...
 # and print-size-sensitive for no real benefit over a lookup pointer
 \`\`\`
 
-If you're building this into a product, cap the accepted input length and fail with a clear error before hitting the encoder's own hard limit — silently truncating someone's data is worse than telling them up front. [QR API](https://${QR_RAPIDAPI_HOST}) caps \`data\` at 2000 characters for exactly this reason: comfortably under the spec's own ~2900-character ceiling at the lowest ECC level, with a clear 4xx instead of an encoder crash past it.`,
+If you're building this into a product, cap the accepted input length and fail with a clear error before hitting the encoder's own hard limit — silently truncating someone's data is worse than telling them up front. [QR API](https://${QR_RAPIDAPI_HOST}) caps \`data\` at 2000 characters for exactly this reason: comfortably under the spec's own ~2900-character ceiling at the lowest ECC level, with a clear 4xx instead of an encoder crash past it. Same account also runs [Validate](https://${VALIDATE_RAPIDAPI_HOST}) and [Currency API](https://${CURRENCY_RAPIDAPI_HOST}).`,
   },
   {
     title: "Batch-generating QR codes for events, inventory, or ticketing without hammering an API",
@@ -151,7 +151,7 @@ Two things worth knowing if you're picking colors instead of just accepting the 
 - **Contrast still has to survive a camera, not just a screen.** A QR decoder needs a clear light/dark distinction between modules and background — a pastel-on-pastel combination that looks fine in a design mockup can fail to scan reliably once printed or viewed under bad lighting. Keep real contrast between the two hex values, not just a stylistic difference.
 - **Validate hex input server-side if you ever accept it from a user.** These values get embedded directly into SVG \`fill\` attributes, so strict 3/6-digit hex validation isn't optional — it's the difference between a color param and a markup-injection vector.
 
-Same \`/v1/qr/matrix\` raw-grid endpoint is unaffected by color params since it returns boolean modules, not rendered output — colors only apply to the SVG path.`,
+Same \`/v1/qr/matrix\` raw-grid endpoint is unaffected by color params since it returns boolean modules, not rendered output — colors only apply to the SVG path. Sibling APIs on the same account: [Validate](https://${VALIDATE_RAPIDAPI_HOST}) and [Currency API](https://${CURRENCY_RAPIDAPI_HOST}).`,
   },
 ];
 

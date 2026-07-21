@@ -2,7 +2,7 @@ name: Dev.to weekly article
 
 on:
   schedule:
-    - cron: "0 9 * * 4" # Thursdays 09:00 UTC (validate-api posts Tue, currency-api posts Sat — staggered so the same Dev.to account doesn't post multiple times in one day)
+    - cron: "24 9 * * 4" # Thursdays 09:24 UTC (validate-api posts Tue, currency-api posts Sat — staggered so the same Dev.to account doesn't post multiple times in one day; offset off :00 since round-minute GH Actions schedules see heavy global contention and can be delayed or dropped)
   workflow_dispatch:
     inputs:
       article_index:
